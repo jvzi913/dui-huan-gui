@@ -57,292 +57,292 @@
 </template>
 
 <script>
-  import echarts from "echarts";
-  export default {
-    name: 'index',
-    data() {
-      return {
-        totalList:{},
-        midItem1: {
-          backgroundImage: "url(" + require("../assets/img/index/midItem1.png") + ")",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "100% 100%"
-        },
-        midItem2: {
-          backgroundImage: "url(" + require("../assets/img/index/midItem2.png") + ")",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "100% 100%"
-        },
-        midItem3: {
-          backgroundImage: "url(" + require("../assets/img/index/midItem3.png") + ")",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "100% 100%"
-        },
-        midItem4: {
-          backgroundImage: "url(" + require("../assets/img/index/midItem4.png") + ")",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "100% 100%"
-        }
-      }
-    },
-    mounted() {
-      var that = this;
-      setTimeout(function() {
-        that.dataTotal();
-        that.getExchange();
-        that.getIntegral();
-        that.getStudent();
-      }, 500)
-    },
-    methods: {
-      dataTotal(){
-        var that = this;
-        that.$axios({
-          url: that.$globalAPI + 'homepage/getDataStatistics',
-          method: 'get',
-          data: {},
-        }).then(function(res) {
-          that.totalList = res.data;
-        }).catch(function(error) {
-          console.log(error);
-        });
+import echarts from 'echarts'
+export default {
+  name: 'index',
+  data () {
+    return {
+      totalList: {},
+      midItem1: {
+        backgroundImage: 'url(' + require('../assets/img/index/midItem1.png') + ')',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: '100% 100%'
       },
-      getExchange: function() {
-        var that = this;
-        that.$axios({
-          url: that.$globalAPI + 'homepage/getExchangeCount',
-          method: 'get',
-          data: {},
-        }).then(function(res) {
-          var yCounts = res.data.count;
-          var xDays = res.data.days;
-          setTimeout(function(){
-            var exchangeNum = echarts.init(document.getElementById('exchangeNum'));
-            var numOptions = {
-              grid: {
-                top: '15',
-                left: '20',
-                bottom: '20',
-                width: "97%"
-              },
-              xAxis: {
-                type: 'category',
-                data: xDays,
-                axisLine: {
-                  lineStyle: {
-                    color: '#99d9fe',
-                  }
-                },
-                axisLabel: {
-                  textStyle: {
-                    color: '#333333'
-                  }
-                }
-              },
-              yAxis: {
-                splitLine: {
-                  show: true,
-                  lineStyle: {
-                    color: ['#99d9fe'],
-                    width: 1,
-                    type: 'solid'
-                  }
-                },
-                axisLine: {
-                  lineStyle: {
-                    color: '#99d9fe',
-                  }
-                },
-                axisLabel: {
-                  textStyle: {
-                    color: '#333333'
-                  }
-                }
-              },
-              series: [{
-                data: yCounts,
-                type: 'line',
-                symbolSize: 6, //设定实心点的大小
-                lineStyle: {
-                  normal: {
-                    color: '#ffb63f',
-                    width: 3
-                  }
-                },
-                itemStyle: {
-                  normal: {
-                    color: '#ffb63f',
-                    width: 6
-                  }
-                },
-                smooth: true
-              }]
-            };
-            exchangeNum.setOption(numOptions);
-          },500)
-        }).catch(function(error) {
-          console.log(error);
-        });
+      midItem2: {
+        backgroundImage: 'url(' + require('../assets/img/index/midItem2.png') + ')',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: '100% 100%'
       },
-      getIntegral: function() {
-        var that = this;
-        that.$axios({
-          url: that.$globalAPI + 'homepage/getIntegralTotal',
-          method: 'get',
-          data: {},
-        }).then(function(res) {
-          var yCounts = res.data.count;
-          var xDays = res.data.grade;
-          setTimeout(function(){
-            var integralNum = echarts.init(document.getElementById('integral'));
-            var integralOptions = {
-              grid: {
-                top: '15',
-                left: '30',
-                bottom: '20',
-                width: "97%"
-              },
-              xAxis: {
-                type: 'category',
-                data: xDays,
-                axisLine: {
-                  lineStyle: {
-                    color: '#99d9fe',
-                  }
-                },
-                axisLabel: {
-                  textStyle: {
-                    color: '#333333'
-                  }
-                }
-              },
-              yAxis: {
-                splitLine: {
-                  show: true,
-                  lineStyle: {
-                    color: ['#99d9fe'],
-                    width: 1,
-                    type: 'solid'
-                  }
-                },
-                axisLine: {
-                  lineStyle: {
-                    color: '#99d9fe',
-                  }
-                },
-                axisLabel: {
-                  textStyle: {
-                    color: '#333333'
-                  }
-                }
-              },
-              series: [{
-                data: yCounts,
-                type: 'line',
-                symbolSize: 6, //设定实心点的大小
-                lineStyle: {
-                  normal: {
-                    color: '#ff52a9',
-                    width: 3
-                  }
-                },
-                itemStyle: {
-                  normal: {
-                    color: '#ffb63f',
-                    width: 6
-                  }
-                },
-                smooth: true
-              }]
-            };
-            integralNum.setOption(integralOptions);
-          },500)
-        }).catch(function(error) {
-          console.log(error);
-        });
+      midItem3: {
+        backgroundImage: 'url(' + require('../assets/img/index/midItem3.png') + ')',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: '100% 100%'
       },
-      getStudent: function() {
-        var that = this;
-        that.$axios({
-          url: that.$globalAPI + 'homepage/getStudentCount',
-          method: 'get',
-          data: {},
-        }).then(function(res) {
-          var yCounts = res.data.count;
-          var xDays = res.data.grade;
-          setTimeout(function(){
-         var studentNum = echarts.init(document.getElementById('student'));
-         var studentOptions = {
-           grid: {
-             top: '15',
-             left: '30',
-             bottom: '20',
-             width: "97%"
-           },
-           xAxis: {
-             type: 'category',
-             data: xDays,
-             axisLine: {
-               lineStyle: {
-                 color: '#99d9fe',
-               }
-             },
-             axisLabel: {
-               textStyle: {
-                 color: '#333333'
-               }
-             }
-           },
-           yAxis: {
-             splitLine: {
-               show: true,
-               lineStyle: {
-                 color: ['#99d9fe'],
-                 width: 1,
-                 type: 'solid'
-               }
-             },
-             axisLine: {
-               lineStyle: {
-                 color: '#99d9fe',
-               }
-             },
-             axisLabel: {
-               textStyle: {
-                 color: '#333333'
-               }
-             }
-           },
-           series: [{
-             data: yCounts,
-             type: 'bar',
-             barWidth: '25%',
-             lineStyle: {
-               normal: {
-                 color: '#ff52a9',
-                 width: 3
-               }
-             },
-             itemStyle: {
-               normal: {
-                 barBorderRadius: [10, 10, 0, 0],
-                 color: function(params) {
-                   var colorList = ['#ffc745', '#53ff6b', '#42c2ff', '#5474ff', '#bd4cff', '#ff74e7'];
-                   return colorList[params.dataIndex];
-                 }
-               }
-             },
-             smooth: true
-           }]
-         };
-         studentNum.setOption(studentOptions);
-          },500)
-        }).catch(function(error) {
-          console.log(error);
-        });
+      midItem4: {
+        backgroundImage: 'url(' + require('../assets/img/index/midItem4.png') + ')',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: '100% 100%'
       }
     }
+  },
+  mounted () {
+    var that = this
+    setTimeout(function () {
+      that.dataTotal()
+      that.getExchange()
+      that.getIntegral()
+      that.getStudent()
+    }, 500)
+  },
+  methods: {
+    dataTotal () {
+      var that = this
+      that.$axios({
+        url: that.$globalAPI + 'homepage/getDataStatistics',
+        method: 'get',
+        data: {}
+      }).then(function (res) {
+        that.totalList = res.data
+      }).catch(function (error) {
+        console.log(error)
+      })
+    },
+    getExchange: function () {
+      var that = this
+      that.$axios({
+        url: that.$globalAPI + 'homepage/getExchangeCount',
+        method: 'get',
+        data: {}
+      }).then(function (res) {
+        var yCounts = res.data.count
+        var xDays = res.data.days
+        setTimeout(function () {
+          var exchangeNum = echarts.init(document.getElementById('exchangeNum'))
+          var numOptions = {
+            grid: {
+              top: '15',
+              left: '30',
+              bottom: '20',
+              width: '97%'
+            },
+            xAxis: {
+              type: 'category',
+              data: xDays,
+              axisLine: {
+                lineStyle: {
+                  color: '#99d9fe'
+                }
+              },
+              axisLabel: {
+                textStyle: {
+                  color: '#333333'
+                }
+              }
+            },
+            yAxis: {
+              splitLine: {
+                show: true,
+                lineStyle: {
+                  color: ['#99d9fe'],
+                  width: 1,
+                  type: 'solid'
+                }
+              },
+              axisLine: {
+                lineStyle: {
+                  color: '#99d9fe'
+                }
+              },
+              axisLabel: {
+                textStyle: {
+                  color: '#333333'
+                }
+              }
+            },
+            series: [{
+              data: yCounts,
+              type: 'line',
+              symbolSize: 6, // 设定实心点的大小
+              lineStyle: {
+                normal: {
+                  color: '#ffb63f',
+                  width: 3
+                }
+              },
+              itemStyle: {
+                normal: {
+                  color: '#ffb63f',
+                  width: 6
+                }
+              },
+              smooth: true
+            }]
+          }
+          exchangeNum.setOption(numOptions)
+        }, 500)
+      }).catch(function (error) {
+        console.log(error)
+      })
+    },
+    getIntegral: function () {
+      var that = this
+      that.$axios({
+        url: that.$globalAPI + 'homepage/getIntegralTotal',
+        method: 'get',
+        data: {}
+      }).then(function (res) {
+        var yCounts = res.data.count
+        var xDays = res.data.grade
+        setTimeout(function () {
+          var integralNum = echarts.init(document.getElementById('integral'))
+          var integralOptions = {
+            grid: {
+              top: '15',
+              left: '35',
+              bottom: '20',
+              width: '97%'
+            },
+            xAxis: {
+              type: 'category',
+              data: xDays,
+              axisLine: {
+                lineStyle: {
+                  color: '#99d9fe'
+                }
+              },
+              axisLabel: {
+                textStyle: {
+                  color: '#333333'
+                }
+              }
+            },
+            yAxis: {
+              splitLine: {
+                show: true,
+                lineStyle: {
+                  color: ['#99d9fe'],
+                  width: 1,
+                  type: 'solid'
+                }
+              },
+              axisLine: {
+                lineStyle: {
+                  color: '#99d9fe'
+                }
+              },
+              axisLabel: {
+                textStyle: {
+                  color: '#333333'
+                }
+              }
+            },
+            series: [{
+              data: yCounts,
+              type: 'line',
+              symbolSize: 6, // 设定实心点的大小
+              lineStyle: {
+                normal: {
+                  color: '#ff52a9',
+                  width: 3
+                }
+              },
+              itemStyle: {
+                normal: {
+                  color: '#ffb63f',
+                  width: 6
+                }
+              },
+              smooth: true
+            }]
+          }
+          integralNum.setOption(integralOptions)
+        }, 500)
+      }).catch(function (error) {
+        console.log(error)
+      })
+    },
+    getStudent: function () {
+      var that = this
+      that.$axios({
+        url: that.$globalAPI + 'homepage/getStudentCount',
+        method: 'get',
+        data: {}
+      }).then(function (res) {
+        var yCounts = res.data.count
+        var xDays = res.data.grade
+        setTimeout(function () {
+          var studentNum = echarts.init(document.getElementById('student'))
+          var studentOptions = {
+            grid: {
+              top: '15',
+              left: '30',
+              bottom: '20',
+              width: '97%'
+            },
+            xAxis: {
+              type: 'category',
+              data: xDays,
+              axisLine: {
+                lineStyle: {
+                  color: '#99d9fe'
+                }
+              },
+              axisLabel: {
+                textStyle: {
+                  color: '#333333'
+                }
+              }
+            },
+            yAxis: {
+              splitLine: {
+                show: true,
+                lineStyle: {
+                  color: ['#99d9fe'],
+                  width: 1,
+                  type: 'solid'
+                }
+              },
+              axisLine: {
+                lineStyle: {
+                  color: '#99d9fe'
+                }
+              },
+              axisLabel: {
+                textStyle: {
+                  color: '#333333'
+                }
+              }
+            },
+            series: [{
+              data: yCounts,
+              type: 'bar',
+              barWidth: '25%',
+              lineStyle: {
+                normal: {
+                  color: '#ff52a9',
+                  width: 3
+                }
+              },
+              itemStyle: {
+                normal: {
+                  barBorderRadius: [10, 10, 0, 0],
+                  color: function (params) {
+                    var colorList = ['#ffc745', '#53ff6b', '#42c2ff', '#5474ff', '#bd4cff', '#ff74e7']
+                    return colorList[params.dataIndex]
+                  }
+                }
+              },
+              smooth: true
+            }]
+          }
+          studentNum.setOption(studentOptions)
+        }, 500)
+      }).catch(function (error) {
+        console.log(error)
+      })
+    }
   }
+}
 </script>
 
 <style scope>

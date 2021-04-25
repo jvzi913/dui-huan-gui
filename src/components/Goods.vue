@@ -21,8 +21,6 @@
         </el-table-column>
         <el-table-column prop="coName" label="名称" align="center">
         </el-table-column>
-        <el-table-column prop="coSlotName" label="货道名称" align="center">
-        </el-table-column>
         <el-table-column prop="coIndex" label="货道号" align="center">
         </el-table-column>
         <el-table-column prop="coStatusH" label="货道状态" align="center">
@@ -42,9 +40,7 @@
           <template slot-scope="scope">
             <el-button @click="handleClick(scope.row,1)" type="text"><span class="ope-btn"><span class="iconfont3">&#xe67f;</span>查看</span></el-button>
             <el-button @click="handleClick(scope.row,2)" type="text"><span class="ope-btn"><span class="iconfont3">&#xe65c;</span>修改</span></el-button>
-            <!-- <el-popconfirm title="您确认要删除该商品的信息吗？" @confirm="confirmDel(scope.row)">
-              <el-button slot="reference" type="text"><span class="ope-btn-del"><span class="iconfont-del">&#xe69b;</span>删除</span></el-button>
-            </el-popconfirm> -->
+            <el-button @click="handleClick(scope.row,3)" type="text"><span class="ope-btn"><span class="iconfont3">&#xe65c;</span>补货</span></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -68,9 +64,6 @@
           </el-form-item>
           <el-form-item label="所需积分:" class="teacher-dia-mid-item" prop="needInte">
             <el-input type="number" v-model="form.needInte" placeholder="请输入商品所需积分"></el-input>
-          </el-form-item>
-          <el-form-item label="货道名称:" class="teacher-dia-mid-item">
-            <el-input disabled v-model="form.loadName"></el-input>
           </el-form-item>
           <el-form-item label="货道号:" class="teacher-dia-mid-item">
             <el-input disabled v-model="form.loadNum"></el-input>
@@ -121,7 +114,7 @@ export default {
   data () {
     return {
       pageNo: 1,
-      pageSize: 10,
+      pageSize: 11,
       teacherTotal: 0,
       dialogVisible: false,
       goodsName: '',
@@ -241,7 +234,6 @@ export default {
     },
     handleClick (row, status) {
       var that = this
-      that.dialogVisible = true
       that.form.coId = row.coId
       that.form.name = row.coName
       var goodsImg = {}
@@ -252,16 +244,33 @@ export default {
       that.form.goodsColor = row.coColor
       that.form.needInte = row.coIntegral
       that.form.loadNum = row.coIndex
-      that.form.loadName = row.coSlotName
       that.form.loadStatus = row.coStatusH
       that.form.goodsStock = row.coCount
       that.form.oversize = row.coMaxcount
       if (status == 1) {
         that.title = '查看商品信息'
+        that.dialogVisible = true
       } else if (status == 2) {
         that.title = '修改商品信息'
+        that.dialogVisible = true
         that.footerBtn = true
-      }
+      } else if (status == 3) {
+		  console.log(that.form.coId)
+		  that.$axios({
+		    url: that.$globalAPI + 'Commodity/replenishment',
+		    method: 'post',
+		    params: {
+		      coId: that.form.coId
+		    }
+		  }).then(function (res) {
+		    that.$message({
+		      message: res.data.msg,
+		      customClass: 'myMessage'
+		    })
+		  }).catch(function (error) {
+		    console.log(error)
+		  })
+	  }
     },
     changeTeacher () {
       var that = this
@@ -283,8 +292,8 @@ export default {
           } else {
             coImgSrc = that.uploadFile[0].response.data
           }
-          var usId = JSON.parse(localStorage.getItem('userInfo')).usId;
-          setTimeout(function(){
+          var usId = JSON.parse(localStorage.getItem('userInfo')).usId
+          setTimeout(function () {
             that.$axios({
               url: that.$globalAPI + 'Commodity/updateCommodityInfo',
               method: 'post',
@@ -311,7 +320,7 @@ export default {
             }).catch(function (error) {
               console.log(error)
             })
-          },500)
+          }, 500)
         }
       })
     },
@@ -406,8 +415,8 @@ export default {
           const {
             export_json_to_excel
           } = require('@/assets/excel/Export2Excel') // 注意这个Export2Excel路径
-          const tableHeader = ['商品名称', '货道名称', '货道号', '货道状态', '当前库存', '所需积分', '创建时间'] // 设置Excel表格的表头
-          const filterVal = ['coName', 'coSlotName', 'coIndex', 'coStatusH', 'coCount', 'coIntegral', 'coCreateDate'] // 跟表格表头对应的绑定的prop
+          const tableHeader = ['商品名称', '货道号', '货道状态', '当前库存', '所需积分', '创建时间'] // 设置Excel表格的表头
+          const filterVal = ['coName', 'coIndex', 'coStatusH', 'coCount', 'coIntegral', 'coCreateDate'] // 跟表格表头对应的绑定的prop
           let list = this.selectList// this.selectList为选中的要导出的数据，用filterTableData方法先处理一下数据格式(要进行深度拷贝，以免过滤的时候，影响页面上展示的数据)，再存到list
           let data = this.formatJson(filterVal, list)
           export_json_to_excel(tableHeader, data, '商品信息表') // 最后一个是导出表格的名字

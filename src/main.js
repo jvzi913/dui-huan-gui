@@ -20,6 +20,9 @@ Vue.prototype.$globalAPI = globalAPI.commonUrl;
 //引入导出表格的相关js
 import Blob from './assets/excel/Blob.js';
 import Export2Excel from './assets/excel/Export2Excel.js';
+//引入导入表格的相关js
+import XLSX from 'xlsx';
+Vue.prototype.XLSX = XLSX;
 //使用less
 import less from 'less';
 Vue.use(less);

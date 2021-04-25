@@ -54,7 +54,7 @@ export default {
       if (that.form.account != '' && that.form.pws != '') {
         setTimeout(function () {
           that.$axios({
-            url: that.$globalAPI + 'user/login',
+            url: that.$globalAPI + 'user/loginPC',
             method: 'post',
             params: {
               usAccount: that.form.account,
